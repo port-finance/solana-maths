@@ -1,0 +1,31 @@
+name: Port Anchor Adaptor Library
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_TOOLCHAIN: nightly-2021-12-09
+
+jobs:
+
+  lint-rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Rust nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          profile: minimal
+          components: rustfmt, clippy
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@v1
+      - name: Formatting and Linting
+        run: | 
+          cargo fmt -- --check
+          cargo check
