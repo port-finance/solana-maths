@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  CARGO_TERM_COLOR: always
+  RUST_TOOLCHAIN: nightly-2021-12-09
+
 jobs:
 
   lint-rust:
@@ -17,7 +21,7 @@ jobs:
         with:
           override: true
           profile: minimal
-          components: rustfmt, clippy
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
       - name: Cache dependencies
         uses: Swatinem/rust-cache@v1
       - name: Formatting and Linting
